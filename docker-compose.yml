@@ -1,0 +1,49 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: energia
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html:cached
+    depends_on:
+      - mysql
+    networks:
+      - laravelnet
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysqlenergia
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_HOST: "%"  # Permitir conexões externas
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - laravelnet
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadminenergia
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    depends_on:
+      - mysql
+    networks:
+      - laravelnet
+
+volumes:
+  mysql_data:
+
+networks:
+  laravelnet:
+    driver: bridge
