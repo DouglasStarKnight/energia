@@ -1,29 +1,82 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<x-app-layout>
+  <div class="border rounded bg-secondary bg-opacity-50 mb-5">
+    <h2 class="text-center my-3 text-white">PÁGINA INICIAL</h2>
+  </div>
+  <div class="border rounded bg-secondary bg-opacity-50 w-25">
+    <h6 class="text-center text-white my-1">Economia Mensal</h6>
+  </div>
+  <div id="chart"></div>
+</x-app-layout>
+<script>
+var options = {
+  series: [{
+          name: 'Servings',
+          data: [44, 55, 41, 67, 22, 43]
+        }],
+          annotations: {
+          points: [{
+            x: 'Bananas',
+            seriesIndex: 0,
+            label: {
+              borderColor: '#775DD0',
+              offsetY: 0,
+              style: {
+                color: '#fff',
+                background: '#775DD0',
+              },
+              text: 'Bananas are good',
+            }
+          }]
+        },
+        chart: {
+          height: 350,
+          type: 'bar',
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '50%',
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          width: 0
+        },
+        grid: {
+          row: {
+            colors: ['#fff', '#f2f2f2']
+          }
+        },
+        xaxis: {
+          labels: {
+            rotate: -45
+          },
+          categories: ['Janeiro', 'favereiro', 'Março', 'Abril', 'Maio', 'Junho',
+          ],
+          tickPlacement: 'on'
+        },
+        yaxis: {
+          title: {
+            text: 'Servings',
+          },
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shade: 'light',
+            type: "horizontal",
+            shadeIntensity: 0.25,
+            gradientToColors: undefined,
+            inverseColors: true,
+            opacityFrom: 0.85,
+            opacityTo: 0.85,
+            stops: [50, 0, 100]
+          },
+        }
+        };
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-
-    </head>
-    <body >
-        <div style="background-color: #7F00FF; color:white; height:60px">
-            <span>Energia sei la</span>
-        </div>
-    </body>
-</html>
-<style>
-    html,
-  body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    /* overflow: hidden; */
-  }
-</style>
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+</script>
